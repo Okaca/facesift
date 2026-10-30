@@ -9,6 +9,7 @@ archive/
 output*/
 crops*/
 *.npy
+data/
 
 # Editors / OS
 .vscode/

@@ -1,7 +1,7 @@
-"""Load all photos from a folder (e.g. everything guests uploaded).
+"""Build the face index for a folder of photos (e.g. everything guests uploaded).
 
-Usage:
-    python main.py "archive/Original Images/Original Images"
+Usage (from the repo root):
+    python -m facesift.index "archive/Original Images/Original Images"
 """
 
 import argparse
@@ -12,10 +12,10 @@ import cv2
 import numpy as np
 from tqdm import tqdm
 
-from devices import check_active, select_providers
-from face_cropper import FaceCropper
-from face_encoder import FaceEncoder
-from load_photos import PhotoLoader
+from facesift.devices import check_active, select_providers
+from facesift.face_cropper import FaceCropper
+from facesift.face_encoder import FaceEncoder
+from facesift.load_photos import PhotoLoader
 
 
 def main() -> None:
