@@ -12,6 +12,7 @@ import cv2
 import numpy as np
 from tqdm import tqdm
 
+from devices import check_active, select_providers
 from face_cropper import FaceCropper
 from face_encoder import FaceEncoder
 from load_photos import PhotoLoader
@@ -24,14 +25,26 @@ def main() -> None:
     parser.add_argument(
         "-o", "--output", type=Path, default=Path("output"), help="Folder for embeddings.npy and faces.csv"
     )
+    parser.add_argument(
+        "--device",
+        choices=["auto", "gpu", "cpu"],
+        default="auto",
+        help="Where to run the models: auto uses an NVIDIA GPU if it works, else CPU (default: auto)",
+    )
     args = parser.parse_args()
 
     loader = PhotoLoader(args.input_dir)
     if len(loader) == 0:
         parser.error(f"No images found in {args.input_dir}")
 
-    cropper = FaceCropper()
-    encoder = FaceEncoder()
+    providers, ctx_id = select_providers(args.device)
+    cropper = FaceCropper(providers=providers, ctx_id=ctx_id)
+    encoder = FaceEncoder(providers=providers, ctx_id=ctx_id)
+    try:
+        print(f"Detector runs on: {check_active(cropper.provider, args.device)}")
+        print(f"Encoder runs on : {check_active(encoder.provider, args.device)}")
+    except RuntimeError as e:
+        parser.exit(1, f"error: {e}\n")
     rows = []  # one dict per face, describes the matching row in vectors
     vectors = []  # one (n_faces, 512) array per photo
     loaded = total_faces = 0
