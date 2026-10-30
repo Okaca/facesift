@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Data: dataset and generated results stay local
+archive/
+output*/
+crops*/
+*.npy
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
