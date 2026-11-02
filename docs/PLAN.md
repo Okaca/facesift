@@ -34,7 +34,7 @@ facesift index  ──► data/                         │  • loads embedding
    - Several faces: use the largest and return its box, so the UI can show which face was used.
 3. Encode that face and compute its cosine similarity with every indexed face.
 4. Group by photo: a photo's score is its best-matching face.
-5. Keep photos at or above the **threshold** and sort them best first.
+5. Keep photos at or above the **threshold (0.40 cosine)** and sort them best first.
 6. Return the full match list (IDs and scores only, so it's small). The UI shows 50 at a time.
 
 ## 3. API
@@ -192,5 +192,5 @@ The hostnames already exist, so no new DNS record is needed. Run `sudo systemctl
 
 ## 9. Open questions
 
-- **Threshold:** decided in phase 1.
+- **Threshold:** decided in phase 1: **0.40**. Different people never scored above 0.339; in the search simulation 0.40 returned 0 wrong photos at 99.0% recall (worst person 90.9%).
 - **Dataset license:** the demo photos are celebrity images from a Kaggle dataset. Showing them on a public site is a copyright and likeness gray area. Check the license before phase 6, and switch to a dataset with explicit permission if needed. Local development is unaffected.
